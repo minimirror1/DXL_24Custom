@@ -61,22 +61,12 @@ const osThreadAttr_t dxlTask_attributes = {
   .stack_size = 1024 * 4,
   .priority = (osPriority_t) osPriorityHigh7,
 };
-/* Definitions for mrsTask */
-osThreadId_t mrsTaskHandle;
-const osThreadAttr_t mrsTask_attributes = {
-  .name = "mrsTask",
+/* Definitions for scheduleTask */
+osThreadId_t scheduleTaskHandle;
+const osThreadAttr_t scheduleTask_attributes = {
+  .name = "scheduleTask",
   .stack_size = 1024 * 4,
   .priority = (osPriority_t) osPriorityHigh5,
-};
-/* Definitions for txQueue */
-osMessageQueueId_t txQueueHandle;
-const osMessageQueueAttr_t txQueue_attributes = {
-  .name = "txQueue"
-};
-/* Definitions for rxQueue */
-osMessageQueueId_t rxQueueHandle;
-const osMessageQueueAttr_t rxQueue_attributes = {
-  .name = "rxQueue"
 };
 
 /* Private function prototypes -----------------------------------------------*/
@@ -85,8 +75,8 @@ const osMessageQueueAttr_t rxQueue_attributes = {
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
-void DxlTask(void *argument);
-void MrsTask(void *argument);
+void dxl_main(void *argument);
+void schedule_main(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -112,13 +102,6 @@ void MX_FREERTOS_Init(void) {
   /* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
 
-  /* Create the queue(s) */
-  /* creation of txQueue */
-  //txQueueHandle = osMessageQueueNew (60, sizeof(BypassPacket_TypeDef), &txQueue_attributes);
-
-  /* creation of rxQueue */
-  //rxQueueHandle = osMessageQueueNew (60, sizeof(BypassPacket_TypeDef), &rxQueue_attributes);
-
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
@@ -128,10 +111,10 @@ void MX_FREERTOS_Init(void) {
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* creation of dxlTask */
-  dxlTaskHandle = osThreadNew(DxlTask, NULL, &dxlTask_attributes);
+  dxlTaskHandle = osThreadNew(dxl_main, NULL, &dxlTask_attributes);
 
-  /* creation of mrsTask */
-  mrsTaskHandle = osThreadNew(MrsTask, NULL, &mrsTask_attributes);
+  /* creation of scheduleTask */
+  scheduleTaskHandle = osThreadNew(schedule_main, NULL, &scheduleTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -161,40 +144,40 @@ void StartDefaultTask(void *argument)
   /* USER CODE END StartDefaultTask */
 }
 
-/* USER CODE BEGIN Header_DxlTask */
+/* USER CODE BEGIN Header_dxl_main */
 /**
 * @brief Function implementing the dxlTask thread.
 * @param argument: Not used
 * @retval None
 */
-/* USER CODE END Header_DxlTask */
-__weak void DxlTask(void *argument)
+/* USER CODE END Header_dxl_main */
+__weak void dxl_main(void *argument)
 {
-  /* USER CODE BEGIN DxlTask */
+  /* USER CODE BEGIN dxl_main */
   /* Infinite loop */
   for(;;)
   {
     osDelay(1);
   }
-  /* USER CODE END DxlTask */
+  /* USER CODE END dxl_main */
 }
 
-/* USER CODE BEGIN Header_MrsTask */
+/* USER CODE BEGIN Header_schedule_main */
 /**
-* @brief Function implementing the mrsTask thread.
+* @brief Function implementing the scheduleTask thread.
 * @param argument: Not used
 * @retval None
 */
-/* USER CODE END Header_MrsTask */
-__weak void MrsTask(void *argument)
+/* USER CODE END Header_schedule_main */
+__weak void schedule_main(void *argument)
 {
-  /* USER CODE BEGIN MrsTask */
+  /* USER CODE BEGIN schedule_main */
   /* Infinite loop */
   for(;;)
   {
     osDelay(1);
   }
-  /* USER CODE END MrsTask */
+  /* USER CODE END schedule_main */
 }
 
 /* Private application code --------------------------------------------------*/
