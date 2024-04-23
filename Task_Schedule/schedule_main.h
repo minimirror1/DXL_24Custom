@@ -8,6 +8,16 @@
 #ifndef SCHEDULE_MAIN_H_
 #define SCHEDULE_MAIN_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void schedule_main(void *argument);
+
+#ifdef __cplusplus
+}
+#endif
+
 
 
 

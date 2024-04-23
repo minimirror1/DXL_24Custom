@@ -25,7 +25,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "dxl_main.h"
+#include "schedule_main.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -68,6 +69,16 @@ const osThreadAttr_t scheduleTask_attributes = {
   .stack_size = 1024 * 4,
   .priority = (osPriority_t) osPriorityHigh5,
 };
+/* Definitions for okQueue */
+osMessageQueueId_t okQueueHandle;
+const osMessageQueueAttr_t okQueue_attributes = {
+  .name = "okQueue"
+};
+/* Definitions for moveQueue */
+osMessageQueueId_t moveQueueHandle;
+const osMessageQueueAttr_t moveQueue_attributes = {
+  .name = "moveQueue"
+};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -101,6 +112,13 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_TIMERS */
   /* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
+
+  /* Create the queue(s) */
+  /* creation of okQueue */
+  okQueueHandle = osMessageQueueNew (16, sizeof(uint16_t), &okQueue_attributes);
+
+  /* creation of moveQueue */
+  moveQueueHandle = osMessageQueueNew (16, sizeof(move_typedef), &moveQueue_attributes);
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
